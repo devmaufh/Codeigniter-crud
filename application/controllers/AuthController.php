@@ -18,9 +18,7 @@ class AuthController extends CI_Controller
         if(count($user_data) != 0){
             $user_data = $user_data[0];
             if($user_data['password'] == md5($this->input->post('password'))){
-                $this->session->set_userdata('logged_in', true);
-                $this->session->set_userdata('username', $user_data['username']);
-                $this->session->set_userdata('role', -1259);
+                $this->save_credentials($user_data);
                 redirect('admin/companies');
             }
             var_dump($user_data);
@@ -33,6 +31,25 @@ class AuthController extends CI_Controller
         redirect(base_url('login'));
     }
     public function register(){
-        
+        $this->load->view('templates/header');
+        $this->load->view('auth/register');
+
+    }
+    public function save(){
+        $data = array(
+            'username' => $this->input->post('username'),
+            'name' => $this->input->post('username'),
+            'password' => $this->input->post('password'),
+        );
+
+        /*
+            TO-DO: Implementar registro de usuarios;
+        */
+        var_dump($data);die();
+    }
+    private function save_credentials($data){
+        $this->session->set_userdata('logged_in', true);
+        $this->session->set_userdata('username', $data['username']);
+        $this->session->set_userdata('role', -1259);
     }
 }

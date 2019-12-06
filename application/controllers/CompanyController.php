@@ -15,8 +15,9 @@ class CompanyController extends CI_Controller
         $this->load->view('companies/index', $data);
     }
     public function view($id){
-        $this->CompanyModel->update_visits($id);
         $data['company'] = $this->CompanyModel->getCompanies($id);
+        if(count($data['company'])==0) redirect('');
+        $this->CompanyModel->update_visits($id);
         $this->load->view('templates/header');
         $this->load->view('companies/view',$data);
     }
