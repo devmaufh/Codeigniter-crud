@@ -31,7 +31,7 @@ class CompanyModel extends CI_Model{
         else return false;
     }
     public function update_visits($id){
-        $this->db->query("update companies set visits = (select visits from companies where id = $id) + 1 where id = $id");
+        $this->db->query(" update companies as c inner join companies as cc on c.id = cc.id set c.visits = cc.visits+1 where c.id = $id");
     }
     public function delete($id){
         $this->db->where(array('id'=>$id));
