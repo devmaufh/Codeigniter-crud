@@ -17,7 +17,7 @@ $route['admin/companies/edit/(:any)'] = 'CompanyController/edit/$1';
 $route['companies/view/(:any)'] = 'CompanyController/view/$1';
 
 //Auth routes
-$route['login'] = 'AuthController/index';
+$route['login'] = 'AuthController';
 $route['login/auth'] = 'AuthController/login';
 $route['register'] = 'AuthController/register';
 $route['register/save'] = 'AuthController/save';

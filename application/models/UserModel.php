@@ -8,11 +8,13 @@ class UserModel extends CI_Model{
     public function getUsers($username = FALSE){
         if($username === FALSE) return $this->db->select('user_id, username, name')->from('users')->get()->result_array();
         return $this->db->where('username', $username)->select('user_id, username, name, password')->from('users')->get()->result_array();
-        
+    }
+    public function check_if_exists_user(){
+        $num_rows = $this->db->count_all_results('users');
+        return $num_rows;
     }
     public function insert($data){
         $this->db->insert('users', array(
-            'user_id' => $data['user_id'],
             'username' => $data['username'],
             'name' => $data['name'],
             'password' => md5($data['password']),

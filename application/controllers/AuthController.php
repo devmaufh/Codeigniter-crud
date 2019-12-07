@@ -10,10 +10,20 @@ class AuthController extends CI_Controller
         $this->load->library('session');
     }
     public function index(){
+        $user_count = $this->UserModel->check_if_exists_user();
+        if($user_count == 0){
+            $this->session->set_userdata('first_time', true);
+            redirect('register');
+        }
         $this->load->view('templates/header');
         $this->load->view('auth/login');
     }
     public function login(){
+        $user_count = $this->UserModel->check_if_exists_user();
+        if($user_count == 0){
+            $this->session->set_userdata('first_time', true);
+            redirect('register');
+        }
         $user_data = $this->UserModel->getUsers($this->input->post('username'));
         if(count($user_data) != 0){
             $user_data = $user_data[0];
@@ -21,7 +31,6 @@ class AuthController extends CI_Controller
                 $this->save_credentials($user_data);
                 redirect('admin/companies');
             }
-            var_dump($user_data);
         }
         $this->load->view('templates/header');
         $this->load->view('auth/login',array('error'=>'Usuario y/o contraseña incorrectos'));
@@ -31,9 +40,14 @@ class AuthController extends CI_Controller
         redirect(base_url('login'));
     }
     public function register(){
-        $this->load->view('templates/header');
-        $this->load->view('auth/register');
-
+        if($this->session->userdata('first_time')){
+            $this->load->view('templates/header');
+            $this->load->view('auth/register');
+            $this->session->sess_destroy();
+        }else{
+            redirect('login');
+        }
+       
     }
     public function save(){
         $data = array(
@@ -41,15 +55,13 @@ class AuthController extends CI_Controller
             'name' => $this->input->post('username'),
             'password' => $this->input->post('password'),
         );
-
-        /*
-            TO-DO: Implementar registro de usuarios;
-        */
-        var_dump($data);die();
+        $user_id = $this->UserModel->insert($data);
+        redirect('login');
     }
     private function save_credentials($data){
         $this->session->set_userdata('logged_in', true);
         $this->session->set_userdata('username', $data['username']);
         $this->session->set_userdata('role', -1259);
     }
+    
 }
