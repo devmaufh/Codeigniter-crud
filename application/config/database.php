@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'informatec.mysql.database.azure.com',
-	'username' => 'informatec@informatec',
-	'password' => 'Mauricio1361317',
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'info',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
